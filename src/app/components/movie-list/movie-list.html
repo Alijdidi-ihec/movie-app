@@ -1,0 +1,48 @@
+<section class="movie-list">
+
+    <!-- En-tête : titre + catégories -->
+    <header class="toolbar">
+        <h1 class="section-title">{{ activeLabel() }}</h1>
+
+        <nav class="tabs" aria-label="Catégories de films">
+            @for (category of movieService.categories; track category.key) {
+            <button type="button" class="tab"
+                    [class.active]="movieService.selectedCategory() === category.key"
+                    [attr.aria-pressed]="movieService.selectedCategory() === category.key"
+                    (click)="selectCategory(category.key)">
+                {{ category.label }}
+            </button>
+            }
+        </nav>
+    </header>
+
+    <!-- Grille de films -->
+    <div class="container">
+        @for(movie of movieService.movieList();track movie.id){
+        <div class="movie-card" (click) = "navigateTo(movie)">
+            <div>
+                <img [src]="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="">
+            </div>
+            <div class = "movie-detail">
+                <h2>
+                    {{movie.title}}
+                </h2>
+            </div>
+        </div>
+        }
+    </div>
+
+    <!-- Messages et pagination -->
+    @if (!movieService.loading() && movieService.movieList().length === 0) {
+    <p class="message">No movies found.</p>
+    }
+
+    @if (movieService.hasMore()) {
+    <div class="more">
+        <button type="button" class="load-more" [disabled]="movieService.loading()" (click)="loadMore()">
+            {{ movieService.loading() ? 'Loading...' : 'Load more movies' }}
+        </button>
+    </div>
+    }
+
+</section>

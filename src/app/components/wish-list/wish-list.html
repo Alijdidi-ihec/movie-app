@@ -1,0 +1,52 @@
+<section class="wish-list">
+
+    <!-- En-tête -->
+    <header class="page-header">
+        <h1>My Wish List</h1>
+        <span class="count">
+            {{ movieService.wishList().length }}
+            {{ movieService.wishList().length === 1 ? 'movie' : 'movies' }}
+        </span>
+    </header>
+
+    @if (movieService.wishList().length > 0) {
+
+    <!-- Liste des films -->
+    <ul class="grid">
+        @for (movie of movieService.wishList(); track movie.id) {
+        <li class="card">
+
+            <button type="button" class="poster" (click)="openMovie(movie)"
+                    [attr.aria-label]="'Voir les détails de ' + movie.title">
+                <img [src]="imageBase + movie.poster_path" [alt]="'Affiche du film ' + movie.title"
+                     width="500" height="750" loading="lazy">
+                <span class="rating">
+                    <fa-icon [icon]="faStar"></fa-icon>{{ movie.vote_average.toFixed(1) }}
+                </span>
+            </button>
+
+            <div class="card-body">
+                <h2 class="card-title">{{ movie.title }}</h2>
+                <p class="card-year">{{ movie.release_date ? movie.release_date.slice(0, 4) : '-' }}</p>
+
+                <button type="button" class="remove" (click)="remove(movie)">
+                    <fa-icon [icon]="faTrashCan"></fa-icon>Remove
+                </button>
+            </div>
+
+        </li>
+        }
+    </ul>
+
+    } @else {
+
+    <!-- État vide -->
+    <div class="empty">
+        <fa-icon class="empty-icon" [icon]="faHeartCrack"></fa-icon>
+        <h2>Your wish list is empty</h2>
+        <p>Add movies from their detail page to find them here later.</p>
+        <button type="button" class="primary" (click)="goToMovies()">Browse movies</button>
+    </div>
+
+    }
+</section>

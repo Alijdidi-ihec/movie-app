@@ -1,0 +1,97 @@
+@if (movieService.Selectedmovie(); as movie) {
+<article class="movie-detail">
+
+    <!-- Affiche -->
+    <figure class="poster">
+        <div class="poster-frame">
+            <img [src]="imageBase + movie.poster_path" [alt]="'Affiche du film ' + movie.title" width="500"
+                height="750">
+
+            <!-- Badges superposés -->
+            <span class="badge badge-rating" aria-label="Note moyenne">
+                <fa-icon [icon]="faStar"></fa-icon>{{ movie.vote_average.toFixed(1) }}
+            </span>
+            @if (movie.release_date) {
+            <span class="badge badge-year">{{ movie.release_date.slice(0, 4) }}</span>
+            }
+        </div>
+    </figure>
+
+    <div class="details">
+
+        <!-- En-tête -->
+        <header>
+            <h1 class="title">{{ movie.title }}</h1>
+        </header>
+
+        <!-- Informations clés -->
+        <section class="info-grid" aria-label="Informations du film">
+            @for (card of infoCards(); track card.label) {
+            <dl class="info-card">
+                <fa-icon class="icon" [icon]="card.icon"></fa-icon>
+                <dt>{{ card.label }}</dt>
+                <dd>{{ card.value }}</dd>
+            </dl>
+            }
+        </section>
+
+        <!-- Synopsis -->
+        <section aria-label="Synopsis">
+            <p class="overview">{{ movie.overview || 'No overview available.' }}</p>
+        </section>
+
+        <!-- Actions -->
+        <footer class="actions">
+            <button type="button" (click)="goBack()">Back to movie list</button>
+            <button type="button" [attr.aria-pressed]="inWishList()" (click)="addToWishList()">
+                {{ inWishList() ? 'Remove from Wishlist' : 'Add to Wishlist' }}
+            </button>
+        </footer>
+
+    </div>
+</article>
+
+<!-- Distribution -->
+@if (cast().length > 0) {
+<section class="extra" aria-labelledby="cast-title">
+    <h2 class="section-title" id="cast-title">Cast</h2>
+    <ul class="scroll-row">
+        @for (member of cast(); track member.id) {
+        <li class="cast-card">
+            @if (member.profile_path) {
+            <img class="cast-photo" [src]="profileBase + member.profile_path" [alt]="member.name" width="185"
+                height="278" loading="lazy">
+            } @else {
+            <div class="cast-photo placeholder"><fa-icon [icon]="faUser"></fa-icon></div>
+            }
+            <p class="cast-name">{{ member.name }}</p>
+            <p class="cast-role">{{ member.character || '-' }}</p>
+        </li>
+        }
+    </ul>
+</section>
+}
+
+<!-- Films similaires -->
+@if (similar().length > 0) {
+<section class="extra" aria-labelledby="similar-title">
+    <h2 class="section-title" id="similar-title">Similar movies</h2>
+    <ul class="scroll-row">
+        @for (item of similar(); track item.id) {
+        <li>
+            <button type="button" class="similar-card" (click)="openMovie(item)">
+                <img [src]="imageBase + item.poster_path" [alt]="'Affiche du film ' + item.title" width="500"
+                    height="750" loading="lazy">
+                <span class="similar-title">{{ item.title }}</span>
+                <span class="similar-rating">
+                    <fa-icon [icon]="faStar"></fa-icon>{{ item.vote_average.toFixed(1) }}
+                </span>
+            </button>
+        </li>
+        }
+    </ul>
+</section>
+}
+} @else {
+<p class="loading" role="status">Loading...</p>
+}

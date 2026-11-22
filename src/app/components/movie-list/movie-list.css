@@ -1,0 +1,191 @@
+/* Page : en-tête (titre + catégories), grille de films, pagination */
+.movie-list {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 36px clamp(16px, 4vw, 56px) 80px;
+}
+
+/* En-tête */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.section-title {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 4px solid var(--accent);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+/* Onglets de catégories */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tab {
+  all: unset;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.tab:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tab.active {
+  color: #000;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Grille de films : affiches en vedette, titre en surimpression */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 28px 22px;
+}
+
+.movie-card {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-card);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  outline: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, outline-color 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  outline-color: rgba(245, 179, 1, 0.55);
+}
+
+.movie-card > div:first-child {
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: linear-gradient(135deg, #1b2030, #12151d);
+  transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.movie-card:hover img {
+  transform: scale(1.06);
+  filter: brightness(0.85);
+}
+
+/* Titre posé sur le bas de l'affiche avec un dégradé sombre */
+.movie-detail {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 48px 14px 14px;
+  background: linear-gradient(180deg, transparent 0%, rgba(8, 10, 14, 0.85) 45%, rgba(8, 10, 14, 0.98) 100%);
+}
+
+h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s;
+}
+
+.movie-card:hover h2 {
+  color: var(--accent-strong);
+}
+
+/* Message et bouton « Load more » */
+.message {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.load-more {
+  all: unset;
+  padding: 12px 28px;
+  font-weight: 600;
+  color: #000;
+  background: var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.load-more:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 179, 1, 0.28);
+}
+
+.load-more[disabled] {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
+.load-more:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .movie-list {
+    padding-top: 24px;
+  }
+
+  .container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 18px 14px;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+  }
+}
